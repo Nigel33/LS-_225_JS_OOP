@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+
+    <title>Web_catalog</title>
+  </head>
+
+  <body>
+  	<script>
+      function myBind(func, ctx) {
+        var partialArgs = [].apply(arguments, [2])
+        console.log(ctx);
+        console.log(arguments);
+        console.log(partialArgs);
+
+        return function() {
+          var remainingArgs = [].slice.apply(arguments);
+          var fullArgs = partialArgs.concat(remainingArgs);
+
+          return func.apply(ctx, fullArgs);
+        }
+      }
+
+      function addNumbers(a, b) {
+        return a + b;
+      }
+
+      var addFive = myBind(addNumbers, null, 5);
+      console.log(addFive);
+
+      addFive(10) // 15
+
+
+    </script>
+  </body>
+</html>
+

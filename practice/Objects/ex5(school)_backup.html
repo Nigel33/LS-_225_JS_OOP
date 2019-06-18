@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+
+    <title>Web_catalog</title>
+  </head>
+
+  <body>
+
+  	<script>
+
+      function createStudent(name, year) {
+        return {
+          name: name,
+          year: year,
+          course: [],
+          info: function() {
+            console.log(this.name + ' is a ' + this.year + ' year student');
+          },
+
+          listCourses: function() {
+            console.log(this.course);
+          },
+
+          addCourse: function(subject) {
+            if (typeof subject === 'object') {
+              this.course.push(subject);
+            } else {
+              alert('Invalid course!');
+            }
+          },
+
+          addNote: function(code, content) {
+            this.course.forEach(function (subject) {
+              if (subject.code === code) {
+                if (subject.note) {
+                  subject.note += '; ' + content;
+                } else {
+                  subject.note = subject.name + ': ' + content;
+                }
+              }
+            });
+          },
+
+          viewNotes: function() {
+            var result = this.course.map(this.getAllNotes).filter(this.validNotes);
+
+            console.log(result.join('\n'));
+          },
+
+          getAllNotes: function(subject) {
+            return subject.note;
+          },
+
+          validNotes: function(note) {
+            return note;
+          },
+
+          updateNote: function(code, newContent) {
+            this.course.forEach(function (subject) {
+              if (subject.code === code) {
+                subject.note = newContent;
+              };
+            })
+          },
+
+        }
+      }
+
+       var school = {
+        students: [],
+        addStudent: function(name, year) {
+          var validYears = ['1st', '2nd', '3rd', '4th', '5th'];
+          if (validYears.includes(year)) {
+            var student = createStudent(name, year)
+            this.students.push(student);
+            return student;
+          } else {
+            return 'Invalid Year';
+          }
+        },
+
+        enrollStudent: function(student, courseName, courseCode) {
+          student.addCourse({name: courseName, code: courseCode})
+        },
+
+        addGrade: function(student, code, grade) {
+          var subject = student.course.filter(function (subject) {
+            return subject.code === code;
+          })[0];
+
+          if (subject) {
+            subject.grade = grade;
+          }
+        },
+
+        getReportCard: function(student) {
+          var result = student.course.map(function (subject) {
+            if (subject.grade) {
+              return subject.name + ': ' + subject.grade;
+            } else {
+              return subject.name + ': In Progress';
+            }
+          });
+
+          return result.join('\n');
+        },
+
+        // [{name: 'Qux', course: [{name: 'Math', grade: 97}, {...}]
+        // [{name: 'Foo', course: [{name: 'Math', grade: 97}, {...}]
+
+
+        courseReport: function(courseName) {
+          var studentScores;
+          var getAverage;
+          var arrayResults = this.students.map(function(student) {
+            return student.course.map(function(subject) {
+              if (courseName === subject.name) {
+                return student.name + ': ' + subject.grade;
+              }
+            });
+          });
+
+          studentScores = this.getScorePerStudent(arrayResults);
+          average = this.getAverage(studentScores);
+
+          if (isNaN(average)) {
+            console.log(undefined)
+            return;
+          }
+
+          console.log('=' + courseName + ' Grades=\n' +
+          studentScores.join('\n') +
+          '\n---\n' +
+          'Course average: ' + average);
+        },
+
+        getScorePerStudent: function(arrayOfArrays) {
+          var arrayResult = [];
+          var result = arrayOfArrays.forEach(function (array) {
+            array.forEach(function (score) {
+              if (score) {
+                arrayResult.push(score);
+              }
+            });
+          });
+
+          return arrayResult;
+        },
+
+        getAverage: function(array) {
+          var result = array.map(function (element) {
+            return Number(element.split(' ')[1]);
+          })
+
+          return result.reduce(this.sum) / array.length;
+        },
+
+        sum: function(acc, current) {
+          return acc + current;
+        },
+
+      }
+
+
+      var foo = school.addStudent('foo', '3rd');
+      school.enrollStudent(foo, 'Math', 101)
+      school.enrollStudent(foo, 'Advanced Math', 102);
+      school.enrollStudent(foo, 'Physics', 202);
+      school.addGrade(foo, 101, 95);
+      school.addGrade(foo, 102, 90);
+
+      var bar = school.addStudent('bar', '1st');
+      school.enrollStudent(bar, 'Math', 101)
+      school.addGrade(bar, 101, 91);
+
+      var qux = school.addStudent('qux', '2nd');
+      school.enrollStudent(qux, 'Math', 101)
+      school.enrollStudent(qux, 'Advanced Math', 102);
+      school.addGrade(qux, 101, 93);
+      school.addGrade(qux, 102, 90);
+
+
+      console.log(school.getReportCard(foo));
+      console.log(school.getReportCard(qux));
+      school.courseReport('Math');
+      school.courseReport('Advanced Math');
+      school.courseReport('Physics');
+
+
+
+
+
+
+      // var nigel = createStudent('Nigel', '1st');
+      // nigel.info();
+      // nigel.listCourses();
+      // nigel.addCourse({ name: 'Math', code: 101 });
+      // nigel.addCourse({ name: 'Advanced Math', code: 102 });
+      // nigel.addCourse({ name: 'Science', code: 150 });
+      // nigel.listCourses();
+      // nigel.addNote(101, 'Fun course');
+      // nigel.addNote(101, 'Remember to study for algebra');
+      // nigel.listCourses();
+      // nigel.addNote(102, 'Difficult subject');
+      // nigel.viewNotes();
+      // nigel.updateNote(101, 'Fun course');
+      // nigel.viewNotes();
+    </script>
+  </body>
+</html>
+

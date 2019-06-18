@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+
+    <title>Web_catalog</title>
+  </head>
+
+  <body>
+  	<script>
+      var Account = (function () {
+        var CHARS = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
+
+        function getRandomChar() {
+            var random = (function getRandomIntInclusive(min, max) {
+            min = Math.ceil(min);
+            max = Math.floor(max);
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+          })(1, 62);
+
+          return CHARS[random];
+        };
+
+        function anonymize() {
+          var array = [];
+
+          for (var i = 0; i < 16; i++) {
+            array.push(getRandomChar());
+          }
+
+          return array.join('');
+        }
+
+        return {
+            init: function(email, password, firstName, lastName, displayName) {
+            this.userEmail = email;
+            this.password = password;
+            this.userFirstName = firstName;
+            this.userLastName = lastName;
+            this.userDisplayName = anonymize();
+            return this;
+          },
+
+          reanonymize: function(inputPassword) {
+            if (this.password === inputPassword) {
+              this.displayName = anonymize();
+              return true;
+            }
+
+            return 'Invalid password';
+          },
+
+
+          resetPassWord: function(oldPassword, newPassword) {
+            if (this.password === oldPassword)  {
+              this.password = newPassword;
+            } else {
+              return 'Invalid Password';
+            }
+
+            return true;
+          },
+
+          firstName: function(inputPassword) {
+            if (this.password === inputPassword) {
+              return this.userFirstName;
+            }
+
+            return 'Invalid Password';
+          },
+
+          lastName: function(inputPassword) {
+            if (this.password === inputPassword) {
+              return this.userLastName;
+            }
+
+            return 'Invalid Password';
+          },
+
+          email: function(inputPassword) {
+            if (this.password === inputPassword) {
+              return this.userEmail;
+            }
+
+            return 'Invalid Password';
+          },
+
+          displayName: function() {
+            return this.userDisplayName;
+          },
+
+        };
+      })()
+
+      var person = Object.create(Account).init('nige@gmail.com', 'abc123', 'Nigel', 'Hing')
+
+      // console.log(person.resetPassWord());
+      console.log(person);
+      console.log(person.firstName('abc123'))
+      console.log(person.resetPassWord('ab', '212'));
+      console.log(person.resetPassWord('abc123', '212'));
+      console.log(person.displayName());
+      var displayName = person.displayName;
+person.reanonymize('212');                         // returns true
+console.log(displayName === person.displayName);   // logs false
+
+
+
+    </script>
+  </body>
+</html>
+

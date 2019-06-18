@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+
+    <title>Web_catalog</title>
+  </head>
+
+  <body>
+
+  	<script>
+      function makeList() {
+        var taskLog = ['fdf', 'fdfdfdfdf'];
+        return function(task) {
+          var index;
+
+          if (task === undefined && list.length === 0) {
+            return 'The list is empty';
+          } else if (task === undefined) {
+            return taskLog.join('\n');
+          }
+
+          index = taskLog.indexOf(task);
+
+          if (index > 0) {
+            taskLog.splice(index, 1);
+          } else {
+            taskLog.push(task);
+          }
+        }
+      }
+
+      var list = makeList();
+      console.log(list());
+      list('eat oranges');
+      console.log(list());
+      list('eat oranges');
+      console.log(list());
+    </script>
+
+
+
+
+
+
+
+
+
+  </body>
+</html>
+

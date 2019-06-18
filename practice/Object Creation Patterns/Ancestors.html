@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+
+    <title>Web_catalog</title>
+  </head>
+
+  <body>
+  	<script>
+      Object.prototype.ancestors = function() {
+        var array = [];
+        var key = 0;
+        var object = Object.getPrototypeOf(this);
+
+        while (object && object.hasOwnProperty('name')) {
+          array.push(object.name);
+          object = Object.getPrototypeOf(object)
+        }
+
+        array.push('Object.prototype');
+        console.log(array);
+      }
+
+
+      var foo = {name: 'foo'};
+      var bar = Object.create(foo);
+      bar.name = 'bar';
+      var baz = Object.create(bar);
+      baz.name = 'baz';
+      var qux = Object.create(baz);
+      qux.name = 'qux';
+
+      qux.ancestors();
+      baz.ancestors();  // returns ['bar', 'foo', 'Object.prototype']
+      bar.ancestors();  // returns ['foo', 'Object.prototype']
+      foo.ancestors();  // returns ['Object.prototype']
+
+
+
+    </script>
+  </body>
+</html>
+

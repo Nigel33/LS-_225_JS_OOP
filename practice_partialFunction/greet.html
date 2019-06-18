@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+
+    <title>Web_catalog</title>
+  </head>
+
+  <body>
+  	<script>
+      function greet(string1, string2) {
+        return string1 + ', ' + string2;
+      }
+
+      function generateGreeting(applicator, string1) {
+        return function(string2) {
+          return applicator(string1, string2);
+        }
+      }
+
+      var sayHello = generateGreeting(greet, 'Hello');
+      console.log(sayHello('Brandon'));
+      var sayHi = generateGreeting(greet,'Hi');
+      console.log(sayHi('Sarah'));
+    </script>
+  </body>
+</html>
+

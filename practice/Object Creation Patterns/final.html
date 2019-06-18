@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+
+    <title>Assessment LS_229</title>
+  </head>
+
+  <body>
+  	<script>
+    console.log ('Hello')
+
+    var createTodos = (function() {
+      function getId() {
+        return 'yes';
+      }
+
+      return function(title, month, year, description) {
+        this.id = getId();
+        this.title = title;
+        this.month = month;
+        this.year = year;
+        this.description = description;
+        this.completed = false;
+      }
+    })();
+
+    console.log(new createTodos('grocery', '11', '2017', 'For food'));
+
+
+
+    </script>
+  </body>
+</html>
+

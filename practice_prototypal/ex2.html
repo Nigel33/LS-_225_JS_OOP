@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+
+    <title>Web_catalog</title>
+  </head>
+
+  <body>
+  	<script>
+      function shallowCopy(object) {
+        var result = Object.create(Object.getPrototypeOf(object));
+        var array
+
+        array = Object.getOwnPropertyNames(object);
+        for (var i = 0; i < array.length; i++) {
+          result[array[i]] = object[array[i]];
+        }
+
+        return result;
+      }
+
+      var foo = {
+        a: 1,
+        b: 2,
+      };
+
+      var bar = Object.create(foo);
+      bar.c = 3;
+      bar.say = function() {
+        console.log('c is ' + this.c);
+      };
+
+      var baz = shallowCopy(bar);
+      console.log(baz);       // 1
+      baz.say();                // "c is 3"
+      console.log(baz.hasOwnProperty('a'));  //false
+      baz.hasOwnProperty('b');  //false      // null
+    </script>
+  </body>
+</html>
+

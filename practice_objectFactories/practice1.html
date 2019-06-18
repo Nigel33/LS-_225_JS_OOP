@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+
+    <title>Web_catalog</title>
+  </head>
+
+  <body>
+  	<script>
+      function makeCountry(country, continent, visited) {
+        if (visited === undefined) {
+          visited = false;
+        }
+
+        return {
+          country: country,
+          continent: continent,
+          visited: visited,
+          getDescription: function() {
+            console.log(this.country + ' is located in ' + this.continent + '. I ' + (this.visited ? 'have' : "haven't") + ' visited ' + this.country + '.');
+          },
+
+          visitCountry: function() {
+            this.visited = true;
+          },
+        }
+      }
+
+      var chile = makeCountry('The Republic of Chile', 'South America');
+      var canada = makeCountry('Canada', 'North America');
+      var southAfrica = makeCountry('The Republic of South Africa', 'Africa');
+
+      chile.getDescription();       // "The Republic of Chile is located in South America."
+      canada.getDescription();      // "Canada is located in North America."
+      southAfrica.getDescription(); // "The Republic of South Africa is located in Africa.
+      canada.visitCountry();
+      canada.getDescription();
+
+    </script>
+  </body>
+</html>
+

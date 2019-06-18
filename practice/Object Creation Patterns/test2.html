@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+
+    <title>Web_catalog</title>
+  </head>
+
+  <body>
+  	<script>
+
+
+    var ItemCreator = (function() {
+      function getSkuCode(item, category) {
+        var array = item.split(' ');
+        var firstWordLength = array[0].length;
+        var firstPart;
+
+        if (array.length > 1 && firstWordLength <= 2) {
+          firstPart = (array[0] + array[1]).slice(0, 3)
+        } else {
+          firstPart = array[0].slice(0,3);
+        }
+
+        return (firstPart + category.slice(0, 2)).toUpperCase();
+      }
+
+      function itemNameValid(string) {
+        var replaced = string.replace(/[' ']/g, '');
+        if (replaced.length < 5) {
+          return false;
+        }
+
+        return string;
+      }
+
+      function categoryValid(string) {
+        var index = string.indexOf(' ');
+        if (index !== -1 || string.length < 5) {
+          return false;
+        }
+
+        return string;
+      }
+
+
+      function quantityValid(amount) {
+        if (amount === undefined || amount < 0) {
+          return false;
+        }
+
+        return true;
+      }
+
+      return function(name, category, quantity) {
+        if (itemNameValid(name) && categoryValid(category) && quantityValid(quantity)) {
+          this.itemName = name;
+          this.category = category;
+          this.quantity = quantity;
+          this.skuCode = getSkuCode(name, category);
+        } else {
+          return {notValid: true};
+        }
+      };
+    })();
+
+    var ItemManager = {
+      items: [],
+      getItem: function(sku) {
+        return this.items.filter(function(item) {
+          return item.skuCode === sku;
+        })[0];
+      },
+
+      create: function(itemName, category, quantity) {
+        var obj = new ItemCreator(itemName, category, quantity);
+        if (obj.notValid) {
+          return false;
+        }
+
+        this.items.push(obj);
+        return obj;
+      },
+
+      update: function(sku, newData) {
+        var keys = Object.keys(newData);
+        var object = this.getItem(sku);
+
+        for (var i = 0; i < keys.length; i++) {
+          var propKey = keys[i];
+          object[propKey] = newData[propKey];
+        }
+      },
+
+      delete: function(sku) {
+        var object = this.getItem(sku);
+        var index = this.items.indexOf(object);
+        this.items.splice(index, 1);
+      },
+
+     inStock: function() {
+        return this.items.filter(function(item) {
+          return item.quantity > 0;
+        });
+      },
+
+      itemsInCategory: function(category) {
+        return this.items.filter(function (item) {
+          return item.category === category;
+        });
+      },
+    };
+
+    var ReportManager = {
+      init: function(manager) {
+        this.items = ItemManager;
+      },
+
+      createReporter: function(sku) {
+        var item = this.items.getItem(sku);
+        return (function() {
+          return {
+            itemInfo: function() {
+              var keys = Object.getOwnPropertyNames(item);
+              for (var i = 0; i < keys.length; i++) {
+                console.log(keys[i] + ': ' + item[keys[i]]);
+              }
+            },
+          }
+        })()
+      },
+
+      reportInStock: function() {
+        return this.items.inStock().map(function(item) {
+          return item.itemName;
+        }).join(', ');
+      },
+    }
+
+
+ItemManager.create('basket ball', 'sports', 0);           // valid item
+ItemManager.create('asd', 'sports', 0);
+ItemManager.create('soccer ball', 'sports', 5);           // valid item
+ItemManager.create('football', 'sports');
+ItemManager.create('football', 'sports', 3);              // valid item
+ItemManager.create('kitchen pot', 'cooking items', 0);
+ItemManager.create('kitchen pot', 'cooking', 3);          // valid item
+// returns list with the 4 valid items
+ItemManager.items;
+
+ReportManager.init(ItemManager);
+// logs soccer ball,football,kitchen pot
+console.log(ReportManager.reportInStock());
+
+ItemManager.update('SOCSP', { quantity: 0 });
+// returns list with the item objects for football and kitchen pot
+ItemManager.inStock();
+// football,kitchen pot
+ReportManager.reportInStock();
+
+// returns list with the item objects for basket ball, soccer ball, and football
+ItemManager.itemsInCategory('sports');
+
+ItemManager.delete('SOCSP');
+// returns list the the remaining 3 valid items (soccer ball is removed from the list)
+ItemManager.items;
+
+var kitchenPotReporter = ReportManager.createReporter('KITCO');
+kitchenPotReporter.itemInfo();
+// logs
+// skuCode: KITCO
+// itemName: kitchen pot
+// category: cooking
+// quantity: 3
+
+ItemManager.update('KITCO', { quantity: 10 });
+kitchenPotReporter.itemInfo();
+// logs
+// skuCode: KITCO
+// itemName: kitchen pot
+// category: cooking
+// quantity: 10
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </script>
+  </body>
+</html>
+

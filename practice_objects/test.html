@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+
+    <title>Web_catalog</title>
+  </head>
+
+  <body>
+
+  	<script>
+      function change(a) {
+        a.push(2);
+        console.log(a);
+      }
+
+      var b = 1
+//      change(b);
+//       console.log(b);
+
+      function change2(g) {
+        g = 2;
+        console.log(g);
+      }
+
+      change2(b);  // returns 2
+      console.log(b); // returns 1
+
+      function change() {
+        b = 2;
+        console.log(b);
+      }
+
+      change(); //returns 2
+      console.log(b); // returns 2
+
+
+
+    </script>
+  </body>
+</html>
+

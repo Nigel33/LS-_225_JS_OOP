@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+
+    <title>Web_catalog</title>
+  </head>
+
+  <body>
+  	<script>
+      function subtract(a, b) {
+        return a - b;
+      }
+
+      function makeSubN(n) {
+        return function(number) {
+          return subtract(number, n);
+        }
+      }
+
+      var sub5 = makeSubN(5);
+      console.log(sub5(10)); // 5
+    </script>
+  </body>
+</html>
+

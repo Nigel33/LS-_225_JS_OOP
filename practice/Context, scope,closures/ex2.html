@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+
+    <title>Web_catalog</title>
+  </head>
+
+  <body>
+  	<script>
+      var franchise = {
+        name: 'How to Train Your Dragon',
+        allMovies: function() {
+          return [1, 2, 3].map(function(number) {
+            return this.name + ' ' + number;
+          }.bind(this));
+        },
+      };
+
+      console.log(franchise.allMovies());
+
+
+
+    </script>
+  </body>
+</html>
+

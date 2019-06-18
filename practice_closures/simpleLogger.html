@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+
+    <title>Web_catalog</title>
+  </head>
+
+  <body>
+
+  	<script>
+      // function makeCounter() {
+      //   var count = 0;       // declare a new variable
+      //   return function() {
+      //     count += 1;        // references count from the outer scope
+      //     console.log(count);
+      //   };
+      // }
+
+      // var counter = makeCounter;
+      // console.log(counter());
+
+      function makeCounterLogger(start) {
+        return function(finish) {
+           var i = start;
+          if (finish > start) {
+            for (; i <= finish; i++ ) {
+              console.log(i);
+            }
+          } else {
+            for (; finish <= i; i--) {
+              console.log(i);
+            }
+          }
+        }
+      }
+
+      var countlog = makeCounterLogger(5);
+      countlog(8)
+      countlog(2);
+    </script>
+
+
+
+
+
+
+
+
+
+  </body>
+</html>
+

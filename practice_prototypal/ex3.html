@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+
+    <title>Web_catalog</title>
+  </head>
+
+  <body>
+  	<script>
+      function extend(destination) {
+
+        for (var i = 0; i < arguments.length; i++) {
+          var array = Object.getOwnPropertyNames(arguments[i])
+          var object = arguments[i];
+
+          array.forEach(function(prop) {
+            destination[prop] = object[prop];
+          });
+        }
+
+        return destination;
+      }
+
+      var foo = {
+        a: 0,
+        b: {
+          x: 1,
+          y: 2,
+        },
+      };
+
+      var joe = {
+        name: 'Joe'
+      };
+
+      var funcs = {
+        sayHello: function() {
+          console.log('Hello, ' + this.name);
+        },
+
+        sayGoodBye: function() {
+          console.log('Goodbye, ' + this.name);
+        },
+      };
+
+      var object = extend({}, foo, joe, funcs);
+
+      console.log(object.b.x);          // 1
+      object.sayHello();                // "Hello, Joe"
+    </script>
+  </body>
+</html>
+

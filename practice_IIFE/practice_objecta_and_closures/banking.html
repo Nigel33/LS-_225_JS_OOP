@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+
+    <title>Web_catalog</title>
+  </head>
+
+  <body>
+
+  	<script>
+      function makeAccount(number) {
+        var accountNumber = number;
+        var balance = 0;
+        var transactions = [];
+
+        return {
+          balance: function() {
+            return balance;
+          },
+
+          transactions: function() {
+            return transactions;
+          },
+
+          deposit: function(amount) {
+            balance += amount;
+            this.generateRecord('deposit', amount);
+            return amount;
+          },
+
+          withdraw: function(amount) {
+            if (amount > balance) {
+              amount = balance
+            }
+
+            balance -= amount;
+            this.generateRecord('withdrawal', amount);
+            return amount;
+          },
+
+          generateRecord: function(type, amount) {
+            var record = {
+              type: type,
+              amount: amount,
+            }
+
+            transactions.push(record);
+          },
+        }
+      }
+
+      function makeBank() {
+        var accountNumber = 101;
+        var accounts = [];
+        return {
+          openAccount: function() {
+            var account = makeAccount(accountNumber);
+            accountNumber++;
+            accounts.push(account);
+            return account;
+          },
+
+          transfer: function(source, destination, amount) {
+            return destination.deposit(source.withdraw(amount));
+          }
+        }
+      }
+
+      var bank = makeBank();
+      var account1 = bank.openAccount();
+      var account2 = bank.openAccount();
+      console.log(account1.deposit(10));
+      console.log(bank.transfer(account1, account2, 12));
+      console.log(account1.transactions());
+      console.log(account1.balance());
+      console.log(bank.accounts);
+
+
+      // console.log(account.balance);
+      // console.log(account.deposit(100));
+      // console.log(account.balance);
+      // console.log(account.withdraw(23));
+      // console.log(account.balance);
+      // console.log(account.transactions);
+      // console.log(bank.accounts);
+
+
+    </script>
+
+
+
+
+
+
+
+
+
+  </body>
+</html>
+

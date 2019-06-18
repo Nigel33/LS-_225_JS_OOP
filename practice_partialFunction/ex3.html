@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+
+    <title>Web_catalog</title>
+  </head>
+
+  <body>
+  	<script>
+      function makePartialFunc(func, b) {
+        return function(number) {
+          return func(number, b);
+        }
+      }
+
+      function multiply(a, b) {
+        return a * b;
+      }
+
+      var multiplyBy5 = makePartialFunc(multiply, 5);
+
+      console.log(multiplyBy5(100)); // 500
+
+    </script>
+  </body>
+</html>
+

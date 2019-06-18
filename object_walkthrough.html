@@ -1,0 +1,152 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+
+    <title>Web_catalog</title>
+  </head>
+
+  <body>
+
+  	<script>
+    var me = {
+      firstName: 'Jane',
+      lastName: 'Doe'
+    }
+
+    var friend = {
+      firstName: 'John',
+      lastName: 'Smith',
+    };
+
+    var mother = {
+      firstName: 'Amber',
+      lastName: 'Doe',
+    };
+
+    var father = {
+      firstName: 'Shane',
+      lastName: 'Doe',
+    };
+
+    var people = [];
+
+
+    function fullName(person) {
+      console.log(person.firstName + ' ' + person.lastName);
+    }
+
+    fullName(me);
+    people.push(me);
+    people.push(friend);
+    people.push(mother);
+    people.push(father);
+
+    // function rollCall(collection) {
+    //   collection.forEach(function(item) {
+    //     fullName(item);
+    //   });
+    // }
+
+    // function rollCall(collection) {
+    //   collection.forEach(fullName);
+    // }
+
+    // rollCall(people);
+
+    var joe = {
+      firstName: 'Joe',
+      lastName: "Heintz",
+    }
+
+    var people = {
+      index: 0,
+      collection: [],
+
+      fullName: function(person) {
+        console.log(person.firstName + ' ' + person.lastName);
+      },
+
+      rollCall: function() {
+        // people.collection.forEach(people.fullName)
+        this.collection.forEach(people.fullName)
+      },
+
+      add: function(person) {
+
+        if (this.isInvalidPerson(person)) {
+          return;
+        }
+
+        this.index++;
+        person.index = this.index;
+        this.collection.push(person);
+
+
+      },
+
+      // getIndex: function(person) {
+      //   return this.collection.indexOf(person);
+      // },
+
+      //updated version
+      getIndex: function(person) {
+        var index = -1;
+        this.collection.forEach(function(comparator, i) {
+          if (comparator.firstName === person.firstName &&
+              comparator.lastName === person.lastName) {
+            index = i;
+          }
+        });
+
+        return index;
+      },
+
+      remove: function(person) {
+        var index = this.getIndex(person);
+        if (this.isInvalidPerson(person)) {
+          return;
+        }
+
+        this.collection.splice(index, 1);
+      },
+
+      isInvalidPerson: function(person) {
+        return typeof person.firstName !== 'string' || typeof person.lastName !== 'string';
+      },
+
+      get: function(person) {
+        if (this.isInvalidPerson(person)) {
+          return;
+        }
+
+        return this.collection[this.getIndex(person)];
+      },
+
+      update: function(person) {
+        if (this.isInvalidPerson(person)) {
+          return;
+        }
+
+        var existingPersonId = this.getIndex(person);
+        if (existingPersonId === -1) {
+          this.add(person);
+        } else {
+          this.collection[existingPersonId] = person;
+        }
+      }
+    }
+
+    people.rollCall();
+    people.add(joe);
+    console.log(people.collection);
+    console.log(people.index);
+    // people.remove(mother);
+    // people.remove({firstName: 'Amber', lastName: 'Doe'})
+    // people.rollCall;
+    // console.log(people.remove('fff'));
+    </script>
+  </body>
+</html>
+

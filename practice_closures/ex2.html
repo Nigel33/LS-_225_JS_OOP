@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+
+    <title>Web_catalog</title>
+  </head>
+
+  <body>
+
+  	<script>
+      function later(func, arg) {
+        return function() {
+          return func(arg);
+        };
+      }
+
+      var logWarning = later(console.log, 'The system is shutting down!')
+      logWarning();
+
+    </script>
+
+
+
+
+
+
+
+
+
+  </body>
+</html>
+

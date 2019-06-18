@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+
+    <title>Web_catalog</title>
+  </head>
+
+  <body>
+
+  	<script>
+      function createStudent(name, year) {
+        return {
+          name: name,
+          year: year,
+          course: [],
+          info: function() {
+            console.log(this.name + ' is a ' + this.year + ' year student');
+          },
+
+          listCourses: function() {
+            console.log(this.course);
+          },
+
+          addCourse: function(subject) {
+            if (typeof subject === 'object') {
+              this.course.push(subject);
+            } else {
+              alert('Invalid course!');
+            }
+          },
+
+          addNote: function(code, content) {
+            this.course.forEach(function (subject) {
+              if (subject.code === code) {
+                if (subject.note) {
+                  subject.note += '; ' + content;
+                } else {
+                  subject.note = subject.name + ': ' + content;
+                }
+              }
+            });
+          },
+
+          viewNotes: function() {
+            var result = this.course.map(this.getAllNotes).filter(this.validNotes);
+
+            console.log(result.join('\n'));
+          },
+
+          getAllNotes: function(subject) {
+            return subject.note;
+          },
+
+          validNotes: function(note) {
+            return note;
+          },
+
+          updateNote: function(code, newContent) {
+            this.course.forEach(function (subject) {
+              if (subject.code === code) {
+                subject.note = newContent;
+              };
+            })
+          },
+
+        }
+      }
+
+
+      var nigel = createStudent('Nigel', '1st');
+      nigel.info();
+      nigel.listCourses();
+      nigel.addCourse({ name: 'Math', code: 101 });
+      nigel.addCourse({ name: 'Advanced Math', code: 102 });
+      nigel.addCourse({ name: 'Science', code: 150 });
+      nigel.listCourses();
+      nigel.addNote(101, 'Fun course');
+      nigel.addNote(101, 'Remember to study for algebra');
+      nigel.listCourses();
+      nigel.addNote(102, 'Difficult subject');
+      nigel.viewNotes();
+      nigel.updateNote(101, 'Fun course');
+      nigel.viewNotes();
+    </script>
+  </body>
+</html>
+

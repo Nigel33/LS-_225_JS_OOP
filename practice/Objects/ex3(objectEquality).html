@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+
+    <title>Web_catalog</title>
+  </head>
+
+  <body>
+
+  	<script>
+     //get keys and get properties and compare 
+      function objectsEqual(obj1, obj2) {
+        if (obj1 === obj2) {
+          return true;
+        } 
+
+        var obj1Keys = Object.getOwnPropertyNames(obj1).sort();
+        var obj2Keys = Object.getOwnPropertyNames(obj2).sort();
+
+        return compareKeys(obj1Keys, obj2Keys) && compareProperties(obj1, obj2);
+      }
+
+      function compareKeys(array1, array2) {
+        if (array1.length === 0 && array2.length === 0) {
+          return true;
+        }
+
+        result = array1.every(function (element, index) {
+          return element === array2[index];
+        })
+
+        return result;
+      }
+
+      function compareProperties(obj1, obj2) {
+        var obj1Keys = Object.getOwnPropertyNames(obj1).sort();
+        var key;
+
+        return obj1Keys.every(function (key) {
+          if (typeof obj1[key] === 'object' && typeof obj2[key] === 'object') {
+            return objectsEqual(obj1[key], obj2[key]);
+          }
+
+          return obj1[key] === obj2[key];
+        })
+
+
+      }
+
+
+      console.log(objectsEqual({a: 'foo'}, {a: 'foo'}));                      // true
+      console.log(objectsEqual({a: 'foo', b: 'bar'}, {a: 'foo'}));            // false
+      console.log(objectsEqual({}, {}));                                      // true
+      console.log(objectsEqual({a: 'foo', b: undefined}, {a: 'foo', b: 1})); // false
+      console.log(objectsEqual({a: 'foo', b: {a: 'foo'}}, {a: 'foo', b: {a: 'foo'}}));
+    </script> --> -->
+
+
+
+
+
+
+
+
+
+  </body>
+</html>
+

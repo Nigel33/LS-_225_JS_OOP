@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+
+    <title>Web_catalog</title>
+  </head>
+
+  <body>
+  	<script>
+      function makeCar(rate, brakeRate) {
+        return {
+          speed: 0,
+          rate: rate,
+          brakeRate: brakeRate,
+          accelerate: function() {
+            this.speed += this.rate;
+          },
+          brake: function() {
+            this.speed -= this.brakeRate;
+            (this.speed < 0)? this.speed = 0 : this.speed; 
+          },
+        }
+      } 
+
+      var hatchback = makeCar(8, 6);
+      console.log(hatchback);
+      hatchback.accelerate();
+      hatchback.brake()
+      console.log(hatchback.speed);
+      hatchback.brake()
+      console.log(hatchback.speed);
+
+    </script>
+  </body>
+</html>
+

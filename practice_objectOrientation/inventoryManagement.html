@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+
+    <title>Web_catalog</title>
+  </head>
+
+  <body>
+  	<script>
+      // function setProductPrice(tool, newPrice) {
+      //   if (newPrice >= 0) {
+      //     tool.price = newPrice;
+      //   } else {
+      //     alert('Invalid Price!');
+      //   }
+      // }
+
+      // function describeProduct(tool) {
+      //   console.log(
+      //     'Name: ' + tool.name + 
+      //     '\nID: ' + tool.id + 
+      //     '\nPrice: $' + tool.price + 
+      //     '\nStock: ' + tool.stock);
+      // }
+
+      var scissors = {
+        id: 0,
+        name: 'Scissors',
+        stock: 8,
+        price: 10,
+        setProductPrice: function(newPrice) {
+          if (newPrice >= 0) {
+            this.price = newPrice;
+          } else {
+            alert('Invalid Price!');
+          }
+        },
+
+        describe: function() {
+          console.log(
+            'Name: ' + this.name + 
+            '\nID: ' + this.id + 
+            '\nPrice: $' + this.price + 
+            '\nStock: ' + this.stock);
+        },
+      }
+
+      var drill = {
+        id: 1,
+        name: 'Cordless Drill',
+        stock: 15, 
+        price: 45, 
+        setProductPrice: function(newPrice) {
+          if (newPrice >= 0) {
+            this.price = newPrice;
+          } else {
+            alert('Invalid Price!');
+          }
+        },
+
+        describe: function() {
+          console.log(
+            'Name: ' + this.name + 
+            '\nID: ' + this.id + 
+            '\nPrice: $' + this.price + 
+            '\nStock: ' + this.stock);
+        },
+      }
+
+      function makeTool(id, name, stock, price) {
+        return {
+          id: id,
+          name: name,
+          stock: stock,
+          price: price,
+          setProductPrice: function(newPrice) {
+            if (newPrice >= 0) {
+              this.price = newPrice;
+            } else {
+              alert('Invalid Price!');
+            }
+          },
+
+          describe: function() {
+            console.log(
+              'Name: ' + this.name + 
+              '\nID: ' + this.id + 
+              '\nPrice: $' + this.price + 
+              '\nStock: ' + this.stock);
+          },
+        }
+      }
+
+      
+
+      drill.setProductPrice(70);
+      console.log(drill.price);
+      drill.describe();
+      var hacksaw = makeTool(2, 'hacksaw', 15, 38);
+      hacksaw.describe();
+      
+
+
+
+    </script>
+  </body>
+</html>
+

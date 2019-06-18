@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+
+    <title>Web_catalog</title>
+  </head>
+
+  <body>
+
+  	<script>
+      var invoices = {
+        unpaid: [],
+        paid: [],
+        add: function(clientName, amount) {
+          var result = {
+            name: clientName,
+            amount: amount,
+          }
+
+          this.unpaid.push(result);
+        },
+
+        totalDue: function() {
+          var total = 0;
+          this.unpaid.forEach(function (element) {
+            total += element.amount;
+          });
+
+          return total;
+        },
+
+        totalPaid: function () {
+          var total = 0;
+          this.paid.forEach(function (element) {
+            total += element.amount;
+          });
+
+          return total;
+        },
+
+        payInvoice: function(clientName) {
+          var array = [];
+          var length = this.unpaid.length;
+          for (var i = 0; i < length; i++) {
+            if (this.unpaid[i].name === clientName) {
+              this.paid.push(this.unpaid[i]);
+            } else {
+              array.push(this.unpaid[i]);
+            }
+          }
+
+          this.unpaid = array;
+        },
+
+
+      }
+
+      invoices.add('Due North Development', 250);
+      invoices.add('Moonbeam Interactive', 187.50);
+      invoices.add('Slough Digital', 300);
+      invoices.payInvoice('Due North Development');
+      invoices.payInvoice('Slough Digital');
+      console.log(invoices.totalPaid());
+      console.log(invoices.paid);
+      console.log(invoices.unpaid);
+
+
+    </script>
+  </body>
+</html>
+

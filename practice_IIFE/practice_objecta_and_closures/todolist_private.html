@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+
+    <title>Web_catalog</title>
+  </head>
+
+  <body>
+
+  	<script>
+      function makeList() {
+        var taskLog = [];
+        return {
+          add: function(task) {
+            taskLog.push(task);
+            console.log(task + ' added!');
+          },
+
+          remove: function(task) {
+            var index;
+            index = taskLog.indexOf(task);
+            if (index >= 0) {
+              taskLog.splice(index, 1);
+              console.log(task + ' removed!');
+            } else {
+              console.log('task not found!');
+            }
+          },
+
+          list: function() {
+            console.log(taskLog.join('\n'));
+          },
+        }
+      };
+
+
+
+      var list = makeList();
+      list.add('peas');
+      list.add('corn');
+      list.list();
+      list.remove('peas');
+      list.list();
+      console.log(list.taskLog);
+
+    </script>
+
+
+
+
+
+
+
+
+
+  </body>
+</html>
+

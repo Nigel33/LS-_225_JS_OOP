@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+
+    <title>Web_catalog</title>
+  </head>
+
+  <body>
+  	<script>
+
+    // system
+    // - item creator
+    // - items manager
+    // - reports manager
+
+    // Item creator:
+    // - makes sure all necessary info are present and valid
+
+    // Item manager
+    // - responsible for creating items, updating info about items, delete items and querying info about items
+
+    // Report manager
+    // - generates reports for a specific item or ALL items
+    // - Reports for specific items are generated from report objects created from the report manager.
+    // - The report manager is responsible for all items
+
+    var ItemManager = (function() {
+      function getSkuCode(item, category) {
+        var array = item.split(' ');
+        var firstWordLength = array[0].length;
+        var firstPart;
+
+        if (array.length > 1 && firstWordLength <= 2) {
+          firstPart = (array[0] + array[1]).slice(0, 3)
+        } else {
+          firstPart = array[0].slice(0,3);
+        }
+
+        return firstPart + category.slice(0, 2);
+      }
+
+      function verifyItemName(string) {
+        var replaced = string.replace(' ', '');
+        if (replaced.length < 5) {
+          return undefined;
+        }
+
+        return string;
+      }
+
+      function verifyCategory(string) {
+        var index = string.indexOf(' ');
+        if (index !== -1 || string.length < 5) {
+          return undefined;
+        }
+
+        return string;
+      }
+
+      function verifyQuantity(amount) {
+        if (amount === undefined || amount < 0) {
+          return undefined
+        }
+
+        return amount;
+      }
+
+      function verifyPropertiesValid(array) {
+        var index = array.indexOf(undefined);
+        if (index !== -1) {
+          return false;
+        }
+
+        return true;
+      };
+
+      function getIndex(code, dataSet) {
+        for (var i = 0; i < dataSet.length; i++) {
+          if (dataSet[i].skuCode === code) {
+            return i;
+          }
+        }
+
+        return false;
+      };
+
+      return {
+        items: [],
+        create: function(itemName, category, quantity) {
+          var obj = {};
+          var properties = [];
+          obj.itemName = verifyItemName(itemName);
+          obj.category = verifyCategory(category);
+          obj.quantity = verifyQuantity(quantity);
+          obj.skuCode = getSkuCode(itemName, category);
+
+          properties = Object.getOwnPropertyNames(obj).map(function(propKey) {
+            return obj[propKey];
+          })
+
+          if (verifyPropertiesValid(properties)) {
+            this.items.push(obj);
+            return obj;
+          }
+
+          return false;
+        },
+
+        update: function(code, newData) {
+          var index = getIndex(code, this.items)
+          var keys = Object.keys(newData);
+
+          for (var i = 0; i < keys.length; i ++) {
+            var propKey = keys[i];
+            this.items[index][propKey] = newData[propKey];
+          }
+        },
+
+        delete: function(code) {
+          var index = getIndex(code, this.items)
+          this.items.splice(index, 1);
+        },
+
+       inStock: function() {
+          return this.items.filter(function(item) {
+            return item.quantity > 0;
+          });
+        },
+
+        itemsInCategory: function(category) {
+          return this.items.filter(function (item) {
+            return item.category === category;
+          });
+        },
+
+        getItemFromSku: function(sku) {
+          return this.items.filter(function (item) {
+            return item.skuCode === sku;
+          })[0];
+        },
+      };
+    })();
+
+    var getInfoMixin = {
+      getInfo: function() {
+        var keys = Object.getOwnPropertyNames(this);
+        for (var i = 0; i < keys.length; i++) {
+          console.log(keys[i] + ': ' + this[keys[i]]);
+        }
+      },
+    }
+
+    var ReportManager = {
+      items: [],
+      init: function(manager) {
+        this.items.push(manager);
+      },
+
+      createReporter: function(code) {
+        var pointByRefobj = this.items[0].getItemFromSku(code);
+        function delegate(callingObject, methodOwner, methodName) {
+          return function() { //
+            var allArgs = [].concat(Array.prototype.slice.call(arguments));
+            return methodOwner[methodName].apply(callingObject, allArgs);
+          };
+        }
+
+        function extend(object, mixin) {
+          var methodNames = Object.keys(mixin);
+
+          methodNames.forEach(function(name) {
+            object.__proto__[name] = delegate(object, mixin, name);
+          });
+
+          return object;
+        }
+
+        return extend(pointByRefobj, getInfoMixin);
+      },
+
+      reportInStock: function() {
+        return this.items[0].inStock().map(function(item) {
+          return item.itemName;
+        }).join(', ');
+      },
+    }
+
+    ItemManager.create('basket ball', 'sports', 0);           // valid item
+    ItemManager.create('asd', 'sports', 0);
+    ItemManager.create('soccer ball', 'sports', 5);           // valid item
+    ItemManager.create('football', 'sports');
+    ItemManager.create('football', 'sports', 3);              // valid item
+    ItemManager.create('kitchen pot', 'cooking items', 0);
+    ItemManager.create('kitchen pot', 'cooking', 3);          // valid item
+    console.log(ItemManager.items);
+
+    ReportManager.init(ItemManager);
+    console.log(ReportManager.reportInStock());
+//     ItemManager.update('socsp', { quantity: 0 });
+//     // returns list with the item objects for football and kitchen pot
+//     console.log(ItemManager.inStock());
+//     // football,kitchen pot
+//     console.log(ReportManager.reportInStock());
+//     console.log(ItemManager.itemsInCategory('sports'));
+//     ItemManager.delete('socsp');
+// // returns list the the remaining 3 valid items (soccer ball is removed from the list)
+//     console.log(ItemManager.items);
+    var kitchenPotReporter = ReportManager.createReporter('kitco');
+    // console.log(kitchenPotReporter);
+    kitchenPotReporter.getInfo();
+    ItemManager.update('kitco', { quantity: 10 });
+kitchenPotReporter.getInfo();
+
+
+
+
+
+
+
+
+
+
+
+
+    </script>
+  </body>
+</html>
+
